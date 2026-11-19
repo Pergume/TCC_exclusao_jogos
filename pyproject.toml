@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tccrec"
+version = "0.1.0"
+description = "Restrições de exclusão em recomendação de jogos em português: estudo comparativo de técnicas de recuperação de informação (TCC, UNIR)"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "pyyaml>=6.0", "numpy>=1.26", "pandas>=2.1", "scipy>=1.11", "rank-bm25>=0.2.2", "snowballstemmer>=2.2", "chromadb>=1.0",
+  "sentence-transformers>=3.0", "transformers>=4.51", "accelerate>=0.30",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

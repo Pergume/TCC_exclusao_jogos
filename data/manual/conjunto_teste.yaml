@@ -1,0 +1,469 @@
+# Conjunto de teste: pares de pedidos com e sem restrição de exclusão.
+#
+# Estrutura de cada par:
+#   id:          identificador estável (prefixo = tipo de restrição)
+#   tipo:        estilo_visual | dificuldade | modo_de_jogo | tema | titulo_referencia
+#   com / sem:   o mesmo pedido com e sem a exclusão
+#   referencia:  jogo citado no pedido (removido dos rankings na avaliação)
+#   positivo:    lista de grupos de tags; o jogo precisa satisfazer TODOS os
+#                grupos, bastando UMA tag de cada grupo (entre as top-N tags)
+#   exclusao:    atributo (mapeado para tags em `atributos`), títulos exatos,
+#                padrão no nome (`padrao_titulo`) e/ou desenvolvedora
+#
+# Os nomes das tags seguem o vocabulário de tags de usuário da Steam (em
+# inglês). 
+
+atributos:
+  pixel_art:          {rotulo: "pixel art",                tags: ["Pixel Graphics"]}
+  anime:              {rotulo: "estilo anime",             tags: ["Anime"]}
+  primeira_pessoa:    {rotulo: "primeira pessoa",          tags: ["First-Person"]}
+  terceira_pessoa:    {rotulo: "terceira pessoa",          tags: ["Third Person"]}
+  realista:           {rotulo: "gráficos realistas",       tags: ["Realistic"]}
+  voxel:              {rotulo: "voxel/blocos",             tags: ["Voxel"]}
+  cartunesco:         {rotulo: "visual cartunesco",        tags: ["Cartoony", "Cartoon"]}
+  dois_d:             {rotulo: "2D",                       tags: ["2D"]}
+  dificil:            {rotulo: "difícil",                  tags: ["Difficult"]}
+  dificil_plataforma: {rotulo: "difícil (plataforma)",     tags: ["Difficult", "Precision Platformer"]}
+  soulslike:          {rotulo: "soulslike",                tags: ["Souls-like"]}
+  permadeath:         {rotulo: "morte permanente",         tags: ["Perma Death"]}
+  multiplayer:        {rotulo: "multiplayer",              tags: ["Multiplayer", "Massively Multiplayer", "Online Co-Op", "Co-op", "PvP", "Local Multiplayer", "Local Co-Op", "Split Screen", "4 Player Local"]}
+  pvp:                {rotulo: "PvP/competitivo",          tags: ["PvP", "Competitive", "Battle Royale", "e-sports"]}
+  turnos:             {rotulo: "por turnos",               tags: ["Turn-Based", "Turn-Based Combat", "Turn-Based Strategy", "Turn-Based Tactics"]}
+  tempo_real:         {rotulo: "tempo real",               tags: ["RTS", "Real-Time", "Real Time Tactics", "Real-Time with Pause"]}
+  mundo_aberto:       {rotulo: "mundo aberto",             tags: ["Open World"]}
+  roguelike:          {rotulo: "roguelike",                tags: ["Rogue-like", "Rogue-lite", "Action Roguelike", "Traditional Roguelike", "Roguelike Deckbuilder"]}
+  acesso_antecipado:  {rotulo: "acesso antecipado",        tags: ["Early Access"]}
+  free_to_play:       {rotulo: "free to play",             tags: ["Free to Play"]}
+  crafting:           {rotulo: "crafting",                 tags: ["Crafting"]}
+  terror:             {rotulo: "terror",                   tags: ["Horror", "Survival Horror", "Psychological Horror"]}
+  scifi:              {rotulo: "ficção científica",        tags: ["Sci-fi", "Cyberpunk", "Space"]}
+  guerra:             {rotulo: "guerra/militar",           tags: ["War", "Military", "World War II", "World War I", "Cold War"]}
+  zumbis:             {rotulo: "zumbis",                   tags: ["Zombies"]}
+  medieval:           {rotulo: "medieval",                 tags: ["Medieval"]}
+  gore:               {rotulo: "gore/violência",           tags: ["Gore", "Violent", "Blood"]}
+  terror_psicologico: {rotulo: "terror psicológico",       tags: ["Psychological Horror", "Psychological"]}
+  espaco:             {rotulo: "espaço",                   tags: ["Space", "Space Sim"]}
+  sexual:             {rotulo: "conteúdo sexual",          tags: ["Sexual Content", "Nudity", "NSFW"]}
+  fofo:               {rotulo: "fofo",                     tags: ["Cute", "Wholesome", "Cozy"]}
+  sobrenatural:       {rotulo: "sobrenatural",             tags: ["Supernatural", "Lovecraftian"]}
+
+pares:
+# ---------------------------------------------------------------- estilo visual
+- id: EV01
+  tipo: estilo_visual
+  com: "jogos como Hollow Knight, mas sem pixel art"
+  sem: "jogos como Hollow Knight"
+  referencia: {nome: "Hollow Knight", appid: 367520}
+  positivo: [["Metroidvania"]]
+  exclusao: {atributo: pixel_art}
+- id: EV02
+  tipo: estilo_visual
+  com: "algo parecido com Stardew Valley, mas que não seja em pixel art"
+  sem: "algo parecido com Stardew Valley"
+  referencia: {nome: "Stardew Valley", appid: 413150}
+  positivo: [["Farming Sim"]]
+  exclusao: {atributo: pixel_art}
+- id: EV03
+  tipo: estilo_visual
+  com: "um roguelike de ação como Hades, mas sem gráficos em pixel"
+  sem: "um roguelike de ação como Hades"
+  referencia: {nome: "Hades", appid: 1145360}
+  positivo: [["Action Roguelike"]]
+  exclusao: {atributo: pixel_art}
+- id: EV04
+  tipo: estilo_visual
+  com: "jogos de plataforma 2D sem pixel art"
+  sem: "jogos de plataforma 2D"
+  positivo: [["Platformer"], ["2D"]]
+  exclusao: {atributo: pixel_art}
+- id: EV05
+  tipo: estilo_visual
+  com: "RPGs como Persona 5 Royal, mas sem visual de anime"
+  sem: "RPGs como Persona 5 Royal"
+  referencia: {nome: "Persona 5 Royal", appid: 1687950}
+  positivo: [["JRPG"]]
+  exclusao: {atributo: anime}
+- id: EV06
+  tipo: estilo_visual
+  com: "jogos de luta que não tenham estilo anime"
+  sem: "jogos de luta"
+  positivo: [["Fighting", "2D Fighter", "3D Fighter"]]
+  exclusao: {atributo: anime}
+- id: EV07
+  tipo: estilo_visual
+  com: "um jogo de sobrevivência como Subnautica, mas que não seja em primeira pessoa"
+  sem: "um jogo de sobrevivência como Subnautica"
+  referencia: {nome: "Subnautica", appid: 264710}
+  positivo: [["Survival"], ["Open World", "Open World Survival Craft"]]
+  exclusao: {atributo: primeira_pessoa}
+- id: EV08
+  tipo: estilo_visual
+  com: "jogos de terror que não sejam em primeira pessoa"
+  sem: "jogos de terror"
+  positivo: [["Horror"]]
+  exclusao: {atributo: primeira_pessoa}
+- id: EV09
+  tipo: estilo_visual
+  com: "jogos de corrida sem gráficos realistas"
+  sem: "jogos de corrida"
+  positivo: [["Racing"]]
+  exclusao: {atributo: realista}
+- id: EV10
+  tipo: estilo_visual
+  com: "jogos de mundo aberto como The Witcher 3, mas que não sejam em terceira pessoa"
+  sem: "jogos de mundo aberto como The Witcher 3"
+  referencia: {nome: "The Witcher 3: Wild Hunt — Remastered", appid: 292030}
+  positivo: [["Open World"], ["RPG", "Action RPG"]]
+  exclusao: {atributo: terceira_pessoa}
+- id: EV11
+  tipo: estilo_visual
+  com: "um jogo de construção estilo Minecraft, mas que não seja 2D"
+  sem: "um jogo de construção estilo Minecraft"
+  positivo: [["Sandbox"], ["Building", "Crafting", "Base-Building"]]
+  exclusao: {atributo: dois_d}
+- id: EV12
+  tipo: estilo_visual
+  com: "jogos de estratégia por turnos que não sejam em 2D"
+  sem: "jogos de estratégia por turnos"
+  positivo: [["Turn-Based Strategy"]]
+  exclusao: {atributo: dois_d}
+- id: EV13
+  tipo: estilo_visual
+  com: "jogos de puzzle que não sejam em 2D"
+  sem: "jogos de puzzle"
+  positivo: [["Puzzle"]]
+  exclusao: {atributo: dois_d}
+
+# ------------------------------------------------------------------ dificuldade
+- id: DF01
+  tipo: dificuldade
+  com: "um roguelike que não seja difícil"
+  sem: "um roguelike"
+  positivo: [["Rogue-like", "Rogue-lite", "Action Roguelike"]]
+  exclusao: {atributo: dificil}
+- id: DF02
+  tipo: dificuldade
+  com: "metroidvanias que não sejam difíceis"
+  sem: "metroidvanias"
+  positivo: [["Metroidvania"]]
+  exclusao: {atributo: dificil}
+- id: DF03
+  tipo: dificuldade
+  com: "jogos de plataforma como Celeste, mas sem ser tão difícil"
+  sem: "jogos de plataforma como Celeste"
+  referencia: {nome: "Celeste", appid: 504230}
+  positivo: [["Platformer"]]
+  exclusao: {atributo: dificil_plataforma}
+- id: DF04
+  tipo: dificuldade
+  com: "jogos de ação como Elden Ring, mas que não sejam soulslike"
+  sem: "jogos de ação como Elden Ring"
+  referencia: {nome: "ELDEN RING", appid: 1245620}
+  positivo: [["Action RPG"]]
+  exclusao: {atributo: soulslike}
+- id: DF05
+  tipo: dificuldade
+  com: "RPGs de ação sem combate difícil"
+  sem: "RPGs de ação"
+  positivo: [["Action RPG"]]
+  exclusao: {atributo: dificil}
+- id: DF06
+  tipo: dificuldade
+  com: "jogos de cartas como Slay the Spire, mas que não sejam difíceis"
+  sem: "jogos de cartas como Slay the Spire"
+  referencia: {nome: "Slay the Spire", appid: 646570}
+  positivo: [["Deckbuilding", "Card Battler"]]
+  exclusao: {atributo: dificil}
+- id: DF07
+  tipo: dificuldade
+  com: "shooters de ação rápida que não sejam difíceis"
+  sem: "shooters de ação rápida"
+  positivo: [["Shooter", "FPS"], ["Fast-Paced"]]
+  exclusao: {atributo: dificil}
+- id: DF08
+  tipo: dificuldade
+  com: "jogos de hack and slash que não sejam difíceis"
+  sem: "jogos de hack and slash"
+  positivo: [["Hack and Slash"]]
+  exclusao: {atributo: dificil}
+- id: DF09
+  tipo: dificuldade
+  com: "um jogo de estratégia como XCOM 2, mas que não seja difícil"
+  sem: "um jogo de estratégia como XCOM 2"
+  referencia: {nome: "XCOM 2", appid: 268500}
+  positivo: [["Turn-Based Tactics", "Tactical"]]
+  exclusao: {atributo: dificil}
+- id: DF10
+  tipo: dificuldade
+  com: "jogos de terror psicológico que não sejam difíceis"
+  sem: "jogos de terror psicológico"
+  positivo: [["Psychological Horror"]]
+  exclusao: {atributo: dificil}
+- id: DF11
+  tipo: dificuldade
+  com: "jogos estilo bullet hell que não sejam muito difíceis"
+  sem: "jogos estilo bullet hell"
+  positivo: [["Bullet Hell"]]
+  exclusao: {atributo: dificil}
+- id: DF12
+  tipo: dificuldade
+  com: "jogos de plataforma 3D sem ser difícil"
+  sem: "jogos de plataforma 3D"
+  positivo: [["3D Platformer"]]
+  exclusao: {atributo: dificil_plataforma}
+
+# ---------------------------------------------------------------- modo de jogo
+- id: MJ01
+  tipo: modo_de_jogo
+  com: "jogos de sobrevivência como Valheim, mas sem multiplayer"
+  sem: "jogos de sobrevivência como Valheim"
+  referencia: {nome: "Valheim", appid: 892970}
+  positivo: [["Survival"], ["Crafting", "Open World Survival Craft"]]
+  exclusao: {atributo: multiplayer}
+- id: MJ02
+  tipo: modo_de_jogo
+  com: "jogos de tiro sem PvP"
+  sem: "jogos de tiro"
+  positivo: [["Shooter", "FPS"]]
+  exclusao: {atributo: pvp}
+- id: MJ03
+  tipo: modo_de_jogo
+  com: "RPGs como Baldur's Gate 3, mas que não sejam por turnos"
+  sem: "RPGs como Baldur's Gate 3"
+  referencia: {nome: "Baldur's Gate 3", appid: 1086940}
+  positivo: [["CRPG", "RPG"], ["Story Rich", "Party-Based RPG"]]
+  exclusao: {atributo: turnos}
+- id: MJ04
+  tipo: modo_de_jogo
+  com: "jogos de estratégia que não sejam em tempo real"
+  sem: "jogos de estratégia"
+  positivo: [["Strategy"]]
+  exclusao: {atributo: tempo_real}
+- id: MJ05
+  tipo: modo_de_jogo
+  com: "jogos de RPG que não sejam de mundo aberto"
+  sem: "jogos de RPG"
+  positivo: [["RPG"]]
+  exclusao: {atributo: mundo_aberto}
+- id: MJ06
+  tipo: modo_de_jogo
+  com: "jogos de ação 2D como Dead Cells, mas que não sejam roguelike"
+  sem: "jogos de ação 2D como Dead Cells"
+  referencia: {nome: "Dead Cells", appid: 588650}
+  positivo: [["Action"], ["2D"]]
+  exclusao: {atributo: roguelike}
+- id: MJ07
+  tipo: modo_de_jogo
+  com: "jogos de terror como Phasmophobia, mas que não sejam multiplayer"
+  sem: "jogos de terror como Phasmophobia"
+  referencia: {nome: "Phasmophobia", appid: 739630}
+  positivo: [["Horror", "Psychological Horror"]]
+  exclusao: {atributo: multiplayer}
+- id: MJ08
+  tipo: modo_de_jogo
+  com: "jogos de simulação que não estejam em acesso antecipado"
+  sem: "jogos de simulação"
+  positivo: [["Simulation"]]
+  exclusao: {atributo: acesso_antecipado}
+- id: MJ09
+  tipo: modo_de_jogo
+  com: "jogos de sobrevivência e construção que não estejam em acesso antecipado"
+  sem: "jogos de sobrevivência e construção"
+  positivo: [["Survival"], ["Crafting", "Base-Building", "Building"]]
+  exclusao: {atributo: acesso_antecipado}
+- id: MJ10
+  tipo: modo_de_jogo
+  com: "jogos de tiro para jogar online com amigos, mas sem PvP"
+  sem: "jogos de tiro para jogar online com amigos"
+  positivo: [["Shooter", "FPS"], ["Multiplayer", "Online Co-Op"]]
+  exclusao: {atributo: pvp}
+- id: MJ11
+  tipo: modo_de_jogo
+  com: "jogos de mundo aberto sem crafting"
+  sem: "jogos de mundo aberto"
+  positivo: [["Open World"]]
+  exclusao: {atributo: crafting}
+- id: MJ12
+  tipo: modo_de_jogo
+  com: "jogos de esporte que não sejam competitivos"
+  sem: "jogos de esporte"
+  positivo: [["Sports"]]
+  exclusao: {atributo: pvp}
+- id: MJ13
+  tipo: modo_de_jogo
+  com: "jogos de ação em terceira pessoa sem mundo aberto"
+  sem: "jogos de ação em terceira pessoa"
+  positivo: [["Third Person"], ["Action", "Action-Adventure"]]
+  exclusao: {atributo: mundo_aberto}
+
+# ------------------------------------------------------------------------- tema
+- id: TM01
+  tipo: tema
+  com: "jogos de sobrevivência que não sejam de terror"
+  sem: "jogos de sobrevivência"
+  positivo: [["Survival"]]
+  exclusao: {atributo: terror}
+- id: TM02
+  tipo: tema
+  com: "jogos de mundo aberto como Cyberpunk 2077, mas que não sejam de ficção científica"
+  sem: "jogos de mundo aberto como Cyberpunk 2077"
+  referencia: {nome: "Cyberpunk 2077", appid: 1091500}
+  positivo: [["Open World"], ["RPG", "Action RPG"]]
+  exclusao: {atributo: scifi}
+- id: TM03
+  tipo: tema
+  com: "jogos de tiro em primeira pessoa que não sejam de guerra"
+  sem: "jogos de tiro em primeira pessoa"
+  positivo: [["FPS"]]
+  exclusao: {atributo: guerra}
+- id: TM04
+  tipo: tema
+  com: "jogos de tiro cooperativos sem zumbis"
+  sem: "jogos de tiro cooperativos"
+  positivo: [["Shooter", "FPS"], ["Co-op", "Online Co-Op"]]
+  exclusao: {atributo: zumbis}
+- id: TM05
+  tipo: tema
+  com: "RPGs de fantasia sem temática medieval"
+  sem: "RPGs de fantasia"
+  positivo: [["Fantasy", "Dark Fantasy"], ["RPG"]]
+  exclusao: {atributo: medieval}
+- id: TM06
+  tipo: tema
+  com: "jogos de ação sem gore"
+  sem: "jogos de ação"
+  positivo: [["Action"]]
+  exclusao: {atributo: gore}
+- id: TM07
+  tipo: tema
+  com: "jogos narrativos de escolhas sem terror psicológico"
+  sem: "jogos narrativos de escolhas"
+  positivo: [["Choices Matter"], ["Story Rich"]]
+  exclusao: {atributo: terror_psicologico}
+- id: TM08
+  tipo: tema
+  com: "jogos de horror de sobrevivência como Resident Evil 2, mas sem zumbis"
+  sem: "jogos de horror de sobrevivência como Resident Evil 2"
+  referencia: {nome: "Resident Evil 2", appid: 883710}
+  positivo: [["Survival Horror"]]
+  exclusao: {atributo: zumbis}
+- id: TM09
+  tipo: tema
+  com: "jogos de tiro táticos que não sejam militares"
+  sem: "jogos de tiro táticos"
+  positivo: [["Tactical"], ["Shooter", "FPS"]]
+  exclusao: {atributo: guerra}
+- id: TM10
+  tipo: tema
+  com: "jogos de ficção científica que não se passem no espaço"
+  sem: "jogos de ficção científica"
+  positivo: [["Sci-fi"]]
+  exclusao: {atributo: espaco}
+- id: TM11
+  tipo: tema
+  com: "visual novels sem conteúdo sexual"
+  sem: "visual novels"
+  positivo: [["Visual Novel"]]
+  exclusao: {atributo: sexual}
+- id: TM12
+  tipo: tema
+  com: "jogos de simulação de vida que não sejam fofinhos"
+  sem: "jogos de simulação de vida"
+  positivo: [["Life Sim"]]
+  exclusao: {atributo: fofo}
+- id: TM13
+  tipo: tema
+  com: "jogos de mistério e investigação sem elementos sobrenaturais"
+  sem: "jogos de mistério e investigação"
+  positivo: [["Mystery", "Detective", "Investigation"]]
+  exclusao: {atributo: sobrenatural}
+
+# ------------------------------------------------------------ título de referência
+- id: TR01
+  tipo: titulo_referencia
+  com: "jogos soulslike que não sejam da série Dark Souls"
+  sem: "jogos soulslike"
+  positivo: [["Souls-like"]]
+  exclusao: {padrao_titulo: ["dark souls"]}
+- id: TR02
+  tipo: titulo_referencia
+  com: "jogos como Elden Ring que não sejam da FromSoftware"
+  sem: "jogos como Elden Ring"
+  referencia: {nome: "ELDEN RING", appid: 1245620}
+  positivo: [["Souls-like"]]
+  exclusao: {desenvolvedor: ["FromSoftware"]}
+- id: TR03
+  tipo: titulo_referencia
+  com: "jogos de mundo aberto como GTA V, mas que não sejam da série GTA"
+  sem: "jogos de mundo aberto como GTA V"
+  # Na loja atual, a edição vendida e listada é a "Enhanced" (a "Legacy", 271590, não aparece nas listas)
+  referencia: {nome: "Grand Theft Auto V Enhanced", appid: 3240220}
+  positivo: [["Open World"], ["Crime", "Driving", "Third-Person Shooter"]]
+  exclusao: {padrao_titulo: ["grand theft auto"]}
+- id: TR04
+  tipo: titulo_referencia
+  com: "jogos de RPG como Skyrim que não sejam da Bethesda"
+  sem: "jogos de RPG como Skyrim"
+  referencia: {nome: "The Elder Scrolls V: Skyrim Special Edition", appid: 489830}
+  positivo: [["Open World"], ["RPG"]]
+  # "da Bethesda" cobre a desenvolvedora (Bethesda Game Studios) e a publicadora (Bethesda Softworks)
+  exclusao: {desenvolvedor: ["Bethesda"]}
+- id: TR05
+  tipo: titulo_referencia
+  com: "jogos de tiro como Doom Eternal que não sejam da série Doom"
+  sem: "jogos de tiro como Doom Eternal"
+  referencia: {nome: "DOOM Eternal", appid: 782330}
+  positivo: [["FPS"]]
+  exclusao: {padrao_titulo: ["doom"]}
+- id: TR06
+  tipo: titulo_referencia
+  com: "jogos de terror como Resident Evil Village, mas que não sejam Resident Evil"
+  sem: "jogos de terror como Resident Evil Village"
+  referencia: {nome: "Resident Evil Village", appid: 1196590}
+  positivo: [["Survival Horror"]]
+  exclusao: {padrao_titulo: ["resident evil"]}
+- id: TR07
+  tipo: titulo_referencia
+  com: "metroidvanias como Ori and the Will of the Wisps, mas que não sejam da série Ori"
+  sem: "metroidvanias como Ori and the Will of the Wisps"
+  referencia: {nome: "Ori and the Will of the Wisps", appid: 1057090}
+  positivo: [["Metroidvania"]]
+  exclusao: {padrao_titulo: ["ori and the"]}
+- id: TR08
+  tipo: titulo_referencia
+  com: "jogos de estratégia como Civilization VI que não sejam da série Civilization"
+  sem: "jogos de estratégia como Civilization VI"
+  referencia: {nome: "Sid Meier's Civilization VI", appid: 289070}
+  positivo: [["4X", "Turn-Based Strategy"]]
+  exclusao: {padrao_titulo: ["civilization"]}
+- id: TR09
+  tipo: titulo_referencia
+  com: "jogos de tiro em equipe que não sejam Counter-Strike"
+  sem: "jogos de tiro em equipe"
+  positivo: [["Team-Based"], ["Shooter", "FPS"]]
+  exclusao: {padrao_titulo: ["counter-strike", "counter strike"]}
+- id: TR10
+  tipo: titulo_referencia
+  com: "jogos de ação e aventura como God of War, mas que não sejam da série God of War"
+  sem: "jogos de ação e aventura como God of War"
+  referencia: {nome: "God of War", appid: 1593500}
+  positivo: [["Action-Adventure", "Hack and Slash"], ["Third Person"]]
+  exclusao: {padrao_titulo: ["god of war"]}
+- id: TR11
+  tipo: titulo_referencia
+  com: "jogos de furtividade que não sejam da série Hitman"
+  sem: "jogos de furtividade"
+  positivo: [["Stealth"]]
+  exclusao: {padrao_titulo: ["hitman"]}
+- id: TR12
+  tipo: titulo_referencia
+  com: "jogos de corrida em mundo aberto que não sejam da série Forza"
+  sem: "jogos de corrida em mundo aberto"
+  positivo: [["Racing"], ["Open World"]]
+  exclusao: {padrao_titulo: ["forza"]}
+- id: TR13
+  tipo: titulo_referencia
+  com: "jogos de simulação de fazenda que não sejam Farming Simulator"
+  sem: "jogos de simulação de fazenda"
+  positivo: [["Farming Sim", "Agriculture"]]
+  exclusao: {padrao_titulo: ["farming simulator"]}

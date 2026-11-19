@@ -1,0 +1,16 @@
+# Dados (ficam no Google Drive)
+dados/
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+*.pkl
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+build/
+dist/
+.venv/
+# Sistema
+.DS_Store

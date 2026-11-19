@@ -1,0 +1,86 @@
+# Configuração do projeto. Todos os parâmetros que afetam resultados ficam aqui
+# e são registrados junto de cada execução (tabela `execucoes`).
+# Diretório de dados: variável de ambiente TCC_DATA_DIR (padrão: ./dados).
+
+coleta:
+  # Candidatos: páginas do endpoint "all" do SteamSpy (1000 jogos por página,
+  # aproximadamente em ordem decrescente de donos).
+  steamspy_paginas: 6
+  # Corte mínimo de avaliações totais (positivas + negativas, todas as línguas)
+  # no SteamSpy para um candidato seguir para a etapa de reviews.
+  min_avaliacoes_steamspy: 500
+  # Segunda origem de candidatos: mais vendidos da loja brasileira (D-028).
+  mais_vendidos_br: true
+  mais_vendidos_br_max: 5000
+  # Seleção final.
+  min_reviews_ptbr: 30          # reviews em português (compras na Steam)
+  max_jogos: 3000               # top N por número de reviews em PT-BR
+  reviews_por_jogo: 100         # 1 página da API, ordenadas por utilidade
+  excluir_descritores_conteudo: [3, 4]
+  # Intervalo mínimo entre requisições, em segundos, por serviço.
+  intervalo:
+    steamspy_all: 61.0
+    steamspy: 1.1
+    loja_appdetails: 1.6
+    loja_pagina: 1.6
+    loja_busca: 2.0
+    reviews: 0.6
+  tentativas: 6
+  timeout: 30
+
+base:
+  # Uma tag conta como presente no jogo se estiver entre as N mais votadas
+  # (o SteamSpy devolve até 20, as mesmas exibidas na loja).
+  tags_top_n: 20
+  # Reviews usadas na indexação (fonte "reviews").
+  reviews_indexadas_por_jogo: 50
+  review_min_caracteres: 30
+  review_max_caracteres: 2000
+  # Proporção mínima de palavras funcionais do português para aceitar a review
+  # como escrita em PT-BR (o rótulo de idioma da Steam é declarado pelo autor).
+  review_min_proporcao_pt: 0.06
+  # Tamanho máximo do texto "sobre o jogo" incluído no documento da fonte A.
+  sobre_max_caracteres: 1500
+
+teste:
+  arquivo: data/manual/conjunto_teste.yaml
+  # Critérios para manter um par (ver docs/DECISOES.md, D-016):
+  min_positivos: 10              # jogos que satisfazem a parte positiva
+  min_relevantes_com: 10         # positivos que NÃO violam a exclusão
+  # Para exclusões por atributo, a exclusão precisa "morder": ao menos esta
+  # fração dos positivos tem o atributo excluído.
+  min_proporcao_conflito: 0.15
+  # Para exclusões por título/desenvolvedora: ao menos 1 positivo é excluído.
+  min_violadores_titulo: 1
+
+busca:
+  profundidade_candidatos: 100   # quantos candidatos cada etapa devolve
+  k_avaliacao: [3, 5, 10]
+  rrf_k: 60
+  rerank_profundidade: 50
+  # Agregação de várias reviews de um mesmo jogo: max (MaxP).
+  agregacao_reviews: max
+  # C5 (penalidade estilo E-SENS): nota = s(alvo) - beta * s(armadilha)
+  penalidade_betas: [0.25, 0.5, 1.0]
+  penalidade_beta_principal: 0.5
+
+modelos:
+  # Embedding multilíngue (não restrito/gated).
+  embedding: BAAI/bge-m3
+  embedding_prefixo_consulta: ""
+  embedding_prefixo_documento: ""
+  embedding_lote: 32
+  embedding_max_tokens: 512
+  reranker: BAAI/bge-reranker-v2-m3
+  reranker_lote: 16
+  llm: Qwen/Qwen3-4B-Instruct-2507
+  llm_max_novos_tokens: 256
+  llm_temperatura: 0.0
+  llm_backend: transformers
+  embedding_backend: sentence-transformers
+  reranker_backend: sentence-transformers
+
+avaliacao:
+  semente: 42
+  bootstrap_reamostras: 2000
+  amostra_manual_tamanho: 50

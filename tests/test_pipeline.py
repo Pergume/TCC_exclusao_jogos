@@ -58,7 +58,7 @@ def test_pipeline_completo(cfg, base_sintetica):
     k = concordancia(cfg, caminho)
     assert k["viola"]["n"] == len(am)
 
-    gerar_relatorios(cfg, escrever_docs=False)
+    gerar_relatorios(cfg)
     exportar_csv(cfg)
     assert (dir_dados() / "relatorios" / "EXCLUSOES.md").exists()
     assert (dir_dados() / "export" / "exclusoes.csv").exists()

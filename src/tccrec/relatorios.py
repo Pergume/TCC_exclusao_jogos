@@ -110,15 +110,14 @@ def relatorio_exclusoes(con) -> str:
     return "\n\n".join(partes) + "\n"
 
 
-def gerar_relatorios(cfg, escrever_docs: bool = True) -> None:
+def gerar_relatorios(cfg) -> None:
+    """Grava os relatórios só na pasta de dados (dados/relatorios), nunca no repositório."""
     con = conectar()
-    destino_dados = dir_dados() / "relatorios"
-    destino_dados.mkdir(exist_ok=True)
+    destino = dir_dados() / "relatorios"
+    destino.mkdir(parents=True, exist_ok=True)
     for nome, texto in (("RELATORIO_BASE.md", relatorio_base(con, cfg)), ("EXCLUSOES.md", relatorio_exclusoes(con))):
-        if escrever_docs:
-            (RAIZ / "docs" / nome).write_text(texto, encoding="utf-8")
-        (destino_dados / nome).write_text(texto, encoding="utf-8")
-    registrar_evento(con, "relatorio", "relatórios gerados em docs/ e dados/relatorios/")
+        (destino / nome).write_text(texto, encoding="utf-8")
+    registrar_evento(con, "relatorio", "relatórios gerados em dados/relatorios/")
 
 
 def exportar_csv(cfg) -> None:
